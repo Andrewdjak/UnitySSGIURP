@@ -31,9 +31,9 @@ public class ScreenSpaceGlobalIlluminationURP : ScriptableRendererFeature
     [Tooltip("Enables high-quality upscaling for screen space global illumination. \nThis may impact performance.")]
     [SerializeField] private bool m_HighQualityUpscaling = false;
 
-    [Header("Lighting")]
-    [Tooltip("Specifies if screen space global illumination overrides ambient lighting. \nThis ensures the accuracy of indirect lighting from SSGI.")]
-    [SerializeField] private bool m_OverrideAmbientLighting = true;
+    // [Header("Lighting")]
+    // [Tooltip("Specifies if screen space global illumination overrides ambient lighting. \nThis ensures the accuracy of indirect lighting from SSGI.")]
+    // [SerializeField] private bool m_OverrideAmbientLighting = true;
 
     [Header("Advanced")]
     [Tooltip("Renders back-face lighting when using automatic thickness mode. \nThis improves accuracy in some cases, but may severely impact performance.")]
@@ -101,11 +101,11 @@ public class ScreenSpaceGlobalIlluminationURP : ScriptableRendererFeature
     /// <remarks>
     /// Enable this to ensure the accuracy of indirect lighting from SSGI.
     /// </remarks>
-    public bool OverrideAmbientLighting
-    {
-        get { return m_OverrideAmbientLighting; }
-        set { m_OverrideAmbientLighting = value; }
-    }
+    // public bool OverrideAmbientLighting
+    // {
+    //     get { return m_OverrideAmbientLighting; }
+    //     set { m_OverrideAmbientLighting = value; }
+    // }
 
     /// <summary>
     /// Renders back-face lighting when using automatic thickness mode.
@@ -331,7 +331,7 @@ public class ScreenSpaceGlobalIlluminationURP : ScriptableRendererFeature
         bool isActive = ssgiVolume != null && ssgiVolume.IsActive();
         bool isDebugger = DebugManager.instance.isAnyDebugUIActive;
         bool shouldDisable = !m_ReflectionProbes && renderingData.cameraData.camera.cameraType == CameraType.Reflection;
-        shouldDisable |= ssgiVolume.indirectDiffuseLightingMultiplier.value == 0.0f && !m_OverrideAmbientLighting;
+        shouldDisable |= ssgiVolume.indirectDiffuseLightingMultiplier.value == 0.0f && !ssgiVolume.OverridelightingSS.value;
 
         if (!isActive || shouldDisable)
             return;
@@ -388,14 +388,14 @@ public class ScreenSpaceGlobalIlluminationURP : ScriptableRendererFeature
 
         m_SSGIPass.ssgiVolume = ssgiVolume;
         m_SSGIPass.enableRenderingLayers = enableRenderingLayers;
-        m_SSGIPass.overrideAmbientLighting = m_OverrideAmbientLighting;
+        m_SSGIPass.overrideAmbientLighting = ssgiVolume.OverridelightingSS.value;
 
         bool skyFallback = ssgiVolume.IsFallbackSky();
         if (skyFallback) { m_SSGIMaterial.EnableKeyword(_RAYMARCHING_FALLBACK_SKY); }
         else { m_SSGIMaterial.DisableKeyword(_RAYMARCHING_FALLBACK_SKY); }
 
     #if UNITY_2023_1_OR_NEWER
-        bool outputAPVLighting = m_OverrideAmbientLighting && skyFallback && (Shader.IsKeywordEnabled(PROBE_VOLUMES_L1) || Shader.IsKeywordEnabled(PROBE_VOLUMES_L2));
+        bool outputAPVLighting = ssgiVolume.OverridelightingSS.value && skyFallback && (Shader.IsKeywordEnabled(PROBE_VOLUMES_L1) || Shader.IsKeywordEnabled(PROBE_VOLUMES_L2));
         if (outputAPVLighting) { m_SSGIMaterial.EnableKeyword(_APV_LIGHTING_BUFFER); }
         else { m_SSGIMaterial.DisableKeyword(_APV_LIGHTING_BUFFER); }
         m_SSGIPass.outputAPVLighting = outputAPVLighting;

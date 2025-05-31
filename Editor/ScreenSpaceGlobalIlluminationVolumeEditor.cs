@@ -30,6 +30,7 @@ class ScreenSpaceGlobalIlluminationVolumeEditor : VolumeComponentEditor
     SerializedDataParameter m_DenoiseIntensitySS;
     SerializedDataParameter m_DenoiserRadiusSS;
     SerializedDataParameter m_SecondDenoiserPassSS;
+	SerializedDataParameter m_OverridelightingSS;
 
     // Ray miss hierarchy
     SerializedDataParameter m_RayMiss;
@@ -113,6 +114,8 @@ class ScreenSpaceGlobalIlluminationVolumeEditor : VolumeComponentEditor
         m_DenoiseIntensitySS = Unpack(o.Find(x => x.denoiseIntensitySS));
         m_DenoiserRadiusSS = Unpack(o.Find(x => x.denoiserRadiusSS));
         m_SecondDenoiserPassSS = Unpack(o.Find(x => x.secondDenoiserPassSS));
+		m_OverridelightingSS = Unpack(o.Find(x => x.OverridelightingSS));
+
 
         m_RayMiss = Unpack(o.Find(x => x.rayMiss));
 
@@ -253,6 +256,7 @@ class ScreenSpaceGlobalIlluminationVolumeEditor : VolumeComponentEditor
 
         PropertyField(m_RayMiss);
         PropertyField(m_IndirectDiffuseLightingMultiplier);
+		PropertyField(m_OverridelightingSS);
 
 #if UNITY_2023_3_OR_NEWER
         if (m_IndirectDiffuseRenderingLayers.overrideState.boolValue && m_IndirectDiffuseRenderingLayers.value.intValue != -1)

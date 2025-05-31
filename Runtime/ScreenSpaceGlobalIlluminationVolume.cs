@@ -35,7 +35,7 @@ using UnityEngine.Rendering.Universal;
 [VolumeRequiresRendererFeatures(typeof(ScreenSpaceGlobalIlluminationURP))]
 #endif
 [HelpURL("https://github.com/jiaozi158/UnitySSGIURP/blob/main/Documentation~/Documentation.md")]
-public sealed class ScreenSpaceGlobalIlluminationVolume : VolumeComponent, IPostProcessComponent
+public class ScreenSpaceGlobalIlluminationVolume : VolumeComponent, IPostProcessComponent
 {
     public ScreenSpaceGlobalIlluminationVolume()
     {
@@ -140,12 +140,20 @@ public sealed class ScreenSpaceGlobalIlluminationVolume : VolumeComponent, IPost
     /// </summary>
     [Tooltip("Controls the fallback hierarchy for indirect diffuse in case the ray misses.")]
     public RayMarchingFallbackHierarchyParameter rayMiss = new RayMarchingFallbackHierarchyParameter(RayMarchingFallbackHierarchy.ReflectionProbesAndSky);
+	
+	/// <summary>
+    /// Controls the fallback hierarchy for indirect diffuse in case the ray misses.
+    /// </summary>
+	[InspectorName("Override Lighting Colors"), Tooltip("Whether to override lighting color")]
+    public BoolParameter OverridelightingSS = new BoolParameter(true);
+
+
 
     /// <summary>
     /// Controls the indirect diffuse lighting from screen space global illumination.
     /// </summary>
     [Header("Artistic Overrides"), InspectorName("Indirect Diffuse Lighting Multiplier"), Tooltip("Controls the indirect diffuse lighting from screen space global illumination.")]
-    public MinFloatParameter indirectDiffuseLightingMultiplier = new MinFloatParameter(1.0f, 0.0f);
+    public MinFloatParameter indirectDiffuseLightingMultiplier = new MinFloatParameter(1.0f, -100.0f);
 
 #if UNITY_2023_3_OR_NEWER
     /// <summary>
