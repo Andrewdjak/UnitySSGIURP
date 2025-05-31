@@ -336,7 +336,7 @@ public class ScreenSpaceGlobalIlluminationURP : ScriptableRendererFeature
         bool isActive = ssgiVolume != null && ssgiVolume.IsActive();
         bool isDebugger = DebugManager.instance.isAnyDebugUIActive;
         bool shouldDisable = !m_ReflectionProbes && renderingData.cameraData.camera.cameraType == CameraType.Reflection;
-        shouldDisable |= ssgiVolume.indirectDiffuseLightingMultiplier.value == 0.0f && !m_OverrideAmbientLighting;
+        shouldDisable |= ssgiVolume.indirectDiffuseLightingMultiplier.value == 0.0f && !ssgiVolume.OverridelightingSS.value;
         shouldDisable |= renderingData.cameraData.renderType == CameraRenderType.Overlay;
 
         if (!isActive || shouldDisable)
